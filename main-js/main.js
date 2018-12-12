@@ -12,6 +12,9 @@
     let fov;
     let zoom = 1.0;
     let quaternio;
+    let zoomUnit = 0.053;
+    let earthSpeedRotation = 0.0081;
+    let moonSpeedRotation = 0.0025;
 
     const axis = new THREE.Vector3(0, 1, 0).normalize();
     initialize();
@@ -36,10 +39,10 @@
         });
         renderer.setClearColor(new THREE.Color('lightgrey'), 0)
         // set full size for android
-        if (window.navigator.platform !='Android'&&window.navigator.platform !='Linux armv7l') {
+        if (window.navigator.platform != 'Android' && window.navigator.platform != 'Linux armv7l') {
             renderer.setSize(window.innerWidth, window.innerHeight);
-        }else{
-            renderer.setSize(1500, 2668);
+        } else {
+            renderer.setSize(1476, 2668);
         }
 
         renderer.domElement.style.position = 'absolute'
@@ -50,10 +53,21 @@
         /* Initialize Event Listener for mouse wheel */
         document.addEventListener('mousewheel', onMouseWheel, false);
 
-        /* Function for mouse wheel (Event Listener) */
-        function onMouseWheel(e) {
-            zoom += e.deltaY / 10000;
-        }
+        /* Initialize Event Listener for click zoom in */
+        const $zoomIn = document.getElementById('zoomIn');
+        $zoomIn.addEventListener('click', zoomIn, false);
+
+        /* Initialize Event Listener for click zoom out */
+        const $zoomOut = document.getElementById('zoomOut');
+        $zoomOut.addEventListener('click', zoomOut, false);
+
+        /* Initialize Event Listener for click zoom out */
+        const $speedUp = document.getElementById('speedUp');
+        $speedUp.addEventListener('click', speedUp, false);
+
+        /* Initialize Event Listener for click zoom out */
+        const $speedDown = document.getElementById('speedDown');
+        $speedDown.addEventListener('click', speedDown, false);
 
         /* setup arToolkitSource */
         arToolkitSource = new THREEx.ArToolkitSource({
@@ -165,8 +179,8 @@
     function update() {
         // if (markerRoot.visible) { // uncomment if if you wish to spin the objects in background
 
-        earth.rotation.y += 0.0081;
-        quaternion.setFromAxisAngle(axis, 0.0025);
+        earth.rotation.y += earthSpeedRotation;
+        quaternion.setFromAxisAngle(axis, moonSpeedRotation);
         moon.position.applyQuaternion(quaternion);
 
         // }
@@ -186,6 +200,37 @@
         requestAnimationFrame(animate);
         update();
         render();
+    }
+    /* Function for mouse wheel (Event Listener) */
+    function onMouseWheel(e) {
+        zoom += e.deltaY / 1000;
+        // debugger
+        console.log(e.deltaY / 1000)
+    }
+
+    function zoomIn() {
+        zoom += -zoomUnit;
+    }
+
+    function zoomOut() {
+        zoom += zoomUnit;
+    }
+
+    function speedUp() {
+        const _earthSpeedRotation = 0.0081;
+        const _moonSpeedRotation = 0.0025;
+        earthSpeedRotation += _earthSpeedRotation;
+        moonSpeedRotation += _moonSpeedRotation;
+    }
+
+    function speedDown(e) {
+        const _earthSpeedRotation = 0.0081;
+        const _moonSpeedRotation = 0.0025;
+        /* prevent spinning rearwards */
+        if (earthSpeedRotation > 0 || moonSpeedRotation > 0) {
+            earthSpeedRotation += -_earthSpeedRotation;
+            moonSpeedRotation += -_moonSpeedRotation;
+        }
     }
 
 })(window.THREE);

@@ -5,33 +5,29 @@
     <title>Earth & moon</title>
     <meta name="description"
           content="Hello, WebVR! - A-Frame">
-          <!-- include three.js library -->
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three.min.js"></script>
-          <link rel="shortcut icon" type="image/png" href="./favicon.png"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <!-- include three.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/86/three.min.js"></script>
+    <link rel="shortcut icon"
+          type="image/png"
+          href="./favicon.png" />
+    <link rel="stylesheet"
+          href="./css/style.css">
   </head>
 
   <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-<!-- ---------------- Custom Shader Code ------------------------ -->
-<!-- <script id="vertexShader" type="x-shader/x-vertex">
-  uniform float time;
-  varying vec2 textureUV;
-  void main()
-  {
-      textureUV = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-  }
-  </script>
-
-  <script id="fragmentShader" type="x-shader/x-vertex">
-  uniform float time;
-  uniform sampler2D baseTexture;
-  varying vec2 textureUV;
-  void main()
-  {
-    gl_FragColor = texture2D( baseTexture, textureUV );
-  }
-  </script> -->
-  <!-- ----------------------------------------------------------- -->
+    <div>
+      <h1 class="title">Earth & moon AR</h1>
+    </div>
+    <div class="controls">
+      <div> <button id="zoomIn">Zoom In</button></div>
+      <div class="center">
+        <button id="speedDown"> rotation speed - </button>
+        <button id="speedUp"> rotation speed + </button>
+      </div>
+      <div> <button id="zoomOut">Zoom Out</button></div>
+    </div>
     <!-- include jsartookit -->
     <script src="jsartoolkit5/artoolkit.min.js"></script>
     <script src="jsartoolkit5/artoolkit.api.js"></script>
